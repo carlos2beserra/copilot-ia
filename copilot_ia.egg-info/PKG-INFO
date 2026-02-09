@@ -1,0 +1,286 @@
+Metadata-Version: 2.4
+Name: copilot-ia
+Version: 0.1.0
+Summary: Plataforma de Copilotos de Desenvolvimento Inteligentes com Agno
+Home-page: https://github.com/seu-usuario/copilot-ia
+Author: Copilot-IA Team
+Author-email: Copilot-IA Team <contato@copilot-ia.dev>
+License: MIT
+Project-URL: Homepage, https://github.com/seu-usuario/copilot-ia
+Project-URL: Documentation, https://github.com/seu-usuario/copilot-ia#readme
+Project-URL: Repository, https://github.com/seu-usuario/copilot-ia
+Project-URL: Issues, https://github.com/seu-usuario/copilot-ia/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: agno>=1.0.0
+Requires-Dist: openai>=1.40.0
+Requires-Dist: anthropic>=0.34.0
+Requires-Dist: fastapi>=0.111.0
+Requires-Dist: uvicorn[standard]>=0.30.0
+Requires-Dist: pydantic>=2.8.0
+Requires-Dist: pydantic-settings>=2.4.0
+Requires-Dist: tiktoken>=0.7.0
+Requires-Dist: rich>=13.7.0
+Requires-Dist: typer>=0.12.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: tenacity>=8.5.0
+Requires-Dist: gitpython>=3.1.43
+Requires-Dist: diskcache>=5.6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
+Requires-Dist: pytest-cov>=5.0.0; extra == "dev"
+Requires-Dist: black>=24.0.0; extra == "dev"
+Requires-Dist: ruff>=0.5.0; extra == "dev"
+Requires-Dist: mypy>=1.11.0; extra == "dev"
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
+
+# 🤖 Copilot-IA
+
+> **Copilotos de Desenvolvimento Inteligentes** - Plataforma de agentes especializados para auxiliar no ciclo completo de desenvolvimento de software.
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![Agno](https://img.shields.io/badge/Framework-Agno-purple.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+
+---
+
+## 📋 Visão Geral
+
+O **Copilot-IA** é uma plataforma de agentes de IA construída com o framework **Agno**, projetada para auxiliar desenvolvedores em diversas tarefas do ciclo de desenvolvimento de software. A plataforma utiliza um sistema multiagente onde cada copiloto é especializado em uma área específica.
+
+### 🎯 Copilotos Disponíveis
+
+| Copiloto | Descrição |
+|----------|-----------|
+| 🔍 **Code Reviewer** | Analisa código, identifica problemas e sugere melhorias |
+| 📝 **Documentation** | Gera documentação, docstrings e README |
+| 🧪 **Testing** | Cria testes unitários, de integração e E2E |
+| 🐛 **Debug** | Auxilia na identificação e resolução de bugs |
+| 🔧 **Refactoring** | Sugere e aplica refatorações de código |
+| 🏗️ **Architecture** | Orienta decisões arquiteturais e design patterns |
+| 🔒 **Security** | Analisa vulnerabilidades e melhores práticas de segurança |
+
+---
+
+## 🚀 Início Rápido
+
+### Pré-requisitos
+
+- Python 3.11+
+- API Key de um provedor LLM (OpenAI, Anthropic, Groq)
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/copilot-ia.git
+cd copilot-ia
+
+# Crie um ambiente virtual
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+# .venv\Scripts\activate   # Windows
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com suas chaves de API
+```
+
+### Uso Básico
+
+```python
+from src.copilots import CodeReviewerCopilot
+
+# Inicialize o copiloto
+reviewer = CodeReviewerCopilot()
+
+# Analise um arquivo
+resultado = reviewer.analyze("caminho/para/arquivo.py")
+print(resultado)
+```
+
+### CLI
+
+```bash
+# Revisar código
+copilot review src/main.py
+
+# Gerar documentação
+copilot docs src/utils/
+
+# Criar testes
+copilot test src/services/api.py
+
+# Análise de segurança
+copilot security src/
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+copilot-ia/
+├── config/                    # Configurações YAML
+│   ├── agents_config.yaml     # Configuração dos agentes
+│   ├── prompts_config.yaml    # Templates de prompts
+│   └── logging_config.yaml    # Configuração de logs
+├── src/
+│   ├── copilots/              # Copilotos especializados
+│   │   ├── code_reviewer.py   # Revisor de código
+│   │   ├── documentation.py   # Gerador de documentação
+│   │   ├── testing.py         # Gerador de testes
+│   │   ├── debug.py           # Assistente de debug
+│   │   ├── refactoring.py     # Refatorador
+│   │   ├── architecture.py    # Consultor de arquitetura
+│   │   └── security.py        # Analisador de segurança
+│   ├── agents/                # Agentes base Agno
+│   │   ├── base.py            # Agente base abstrato
+│   │   └── coordinator.py     # Coordenador multiagente
+│   ├── tools/                 # Ferramentas dos agentes
+│   │   ├── code_analysis.py   # Análise de código
+│   │   ├── file_operations.py # Operações de arquivo
+│   │   ├── git_tools.py       # Ferramentas Git
+│   │   └── search_tools.py    # Ferramentas de busca
+│   ├── utils/                 # Utilitários
+│   │   ├── code_parser.py     # Parser de código
+│   │   ├── token_counter.py   # Contador de tokens
+│   │   └── cache.py           # Sistema de cache
+│   └── api/                   # API REST
+│       ├── main.py            # Aplicação FastAPI
+│       └── routes/            # Rotas da API
+├── examples/                  # Exemplos de uso
+├── notebooks/                 # Jupyter notebooks
+├── tests/                     # Testes automatizados
+├── Dockerfile                 # Container Docker
+├── docker-compose.yml         # Orquestração de containers
+├── requirements.txt           # Dependências Python
+└── README.md                  # Este arquivo
+```
+
+---
+
+## ⚙️ Configuração
+
+### Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+# LLM Provider (escolha um)
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+GROQ_API_KEY=gsk_...
+
+# Modelo padrão
+DEFAULT_MODEL=gpt-4o
+DEFAULT_PROVIDER=openai
+
+# Cache
+CACHE_ENABLED=true
+CACHE_TTL=3600
+
+# Logging
+LOG_LEVEL=INFO
+```
+
+### Configuração dos Agentes
+
+Edite `config/agents_config.yaml` para personalizar os agentes:
+
+```yaml
+agents:
+  code_reviewer:
+    model: gpt-4o
+    temperature: 0.3
+    max_tokens: 4096
+    tools:
+      - code_analysis
+      - file_operations
+```
+
+---
+
+## 🔧 Desenvolvimento
+
+### Executar Testes
+
+```bash
+pytest tests/ -v --cov=src
+```
+
+### Linting e Formatação
+
+```bash
+ruff check src/
+black src/
+mypy src/
+```
+
+### Executar API Localmente
+
+```bash
+uvicorn src.api.main:app --reload --port 8000
+```
+
+---
+
+## 🐳 Docker
+
+```bash
+# Build da imagem
+docker build -t copilot-ia .
+
+# Executar container
+docker run -p 8000:8000 --env-file .env copilot-ia
+
+# Ou com docker-compose
+docker-compose up -d
+```
+
+---
+
+## 📚 Documentação Adicional
+
+- [Guia de Contribuição](docs/CONTRIBUTING.md)
+- [Arquitetura do Sistema](docs/ARCHITECTURE.md)
+- [API Reference](docs/API.md)
+- [Exemplos Avançados](docs/EXAMPLES.md)
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor, leia o [guia de contribuição](docs/CONTRIBUTING.md) antes de submeter PRs.
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+## 🙏 Agradecimentos
+
+- [Agno Framework](https://github.com/agno-agi/agno) - Framework de agentes IA
+- [OpenAI](https://openai.com) - Modelos de linguagem
+- [Anthropic](https://anthropic.com) - Claude AI
+
+---
+
+**Feito com ❤️ para desenvolvedores**
+

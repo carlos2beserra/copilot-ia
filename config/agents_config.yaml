@@ -1,0 +1,320 @@
+# =============================================================================
+# Copilot-IA - Configuração dos Agentes
+# =============================================================================
+# Este arquivo define as configurações de cada copiloto/agente do sistema
+
+# -----------------------------------------------------------------------------
+# Configuração Global
+# -----------------------------------------------------------------------------
+global:
+  # Provider padrão (openai, anthropic, groq, google)
+  default_provider: openai
+  
+  # Modelo padrão
+  default_model: gpt-4o
+  
+  # Configurações padrão de geração
+  default_temperature: 0.3
+  default_max_tokens: 4096
+  
+  # Timeout para requisições (segundos)
+  request_timeout: 120
+  
+  # Número máximo de retentativas em caso de erro
+  max_retries: 3
+  
+  # Intervalo entre retentativas (segundos)
+  retry_delay: 1
+
+# -----------------------------------------------------------------------------
+# Copilotos Especializados
+# -----------------------------------------------------------------------------
+copilots:
+  
+  # ---------------------------------------------------------------------------
+  # Code Reviewer - Revisor de Código
+  # ---------------------------------------------------------------------------
+  code_reviewer:
+    name: "Code Reviewer"
+    description: "Analisa código, identifica problemas e sugere melhorias"
+    
+    # Configuração do modelo
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.2  # Baixa para análises precisas
+      max_tokens: 4096
+    
+    # Ferramentas disponíveis para este agente
+    tools:
+      - code_analysis
+      - file_operations
+      - search_tools
+    
+    # Instruções específicas
+    instructions: |
+      Você é um revisor de código experiente e detalhista.
+      Seu objetivo é analisar código e fornecer feedback construtivo.
+      
+      Foque em:
+      - Bugs e erros potenciais
+      - Problemas de segurança
+      - Performance
+      - Legibilidade e manutenibilidade
+      - Boas práticas e padrões
+      - Complexidade desnecessária
+    
+    # Categorias de análise
+    analysis_categories:
+      - bugs
+      - security
+      - performance
+      - maintainability
+      - style
+      - complexity
+
+  # ---------------------------------------------------------------------------
+  # Documentation - Gerador de Documentação
+  # ---------------------------------------------------------------------------
+  documentation:
+    name: "Documentation Writer"
+    description: "Gera documentação, docstrings e README"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.4
+      max_tokens: 4096
+    
+    tools:
+      - file_operations
+      - code_analysis
+    
+    instructions: |
+      Você é um escritor técnico especializado em documentação de software.
+      
+      Suas responsabilidades:
+      - Gerar docstrings claras e informativas
+      - Criar documentação de API
+      - Escrever READMEs completos
+      - Documentar arquitetura e decisões técnicas
+      - Manter consistência no estilo de documentação
+    
+    # Estilos de documentação suportados
+    docstring_styles:
+      - google
+      - numpy
+      - sphinx
+
+  # ---------------------------------------------------------------------------
+  # Testing - Gerador de Testes
+  # ---------------------------------------------------------------------------
+  testing:
+    name: "Test Generator"
+    description: "Cria testes unitários, de integração e E2E"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.3
+      max_tokens: 4096
+    
+    tools:
+      - code_analysis
+      - file_operations
+      - test_runner
+    
+    instructions: |
+      Você é um especialista em testes de software.
+      
+      Seu objetivo é criar testes abrangentes e eficazes:
+      - Testes unitários com boa cobertura
+      - Testes de integração
+      - Testes E2E quando necessário
+      - Casos de borda e edge cases
+      - Mocks e fixtures apropriados
+    
+    # Frameworks de teste suportados
+    test_frameworks:
+      python:
+        - pytest
+        - unittest
+      javascript:
+        - jest
+        - vitest
+        - mocha
+      typescript:
+        - jest
+        - vitest
+
+  # ---------------------------------------------------------------------------
+  # Debug - Assistente de Depuração
+  # ---------------------------------------------------------------------------
+  debug:
+    name: "Debug Assistant"
+    description: "Auxilia na identificação e resolução de bugs"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.2
+      max_tokens: 4096
+    
+    tools:
+      - code_analysis
+      - file_operations
+      - search_tools
+      - stack_trace_analyzer
+    
+    instructions: |
+      Você é um especialista em depuração de software.
+      
+      Seu papel é ajudar a identificar e resolver bugs:
+      - Analisar mensagens de erro e stack traces
+      - Identificar a causa raiz de problemas
+      - Sugerir correções específicas
+      - Explicar por que o bug ocorreu
+      - Recomendar prevenções futuras
+
+  # ---------------------------------------------------------------------------
+  # Refactoring - Refatorador de Código
+  # ---------------------------------------------------------------------------
+  refactoring:
+    name: "Refactoring Expert"
+    description: "Sugere e aplica refatorações de código"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.3
+      max_tokens: 4096
+    
+    tools:
+      - code_analysis
+      - file_operations
+      - search_tools
+    
+    instructions: |
+      Você é um especialista em refatoração de código.
+      
+      Seu objetivo é melhorar a qualidade do código:
+      - Identificar code smells
+      - Sugerir padrões de design apropriados
+      - Simplificar código complexo
+      - Melhorar legibilidade e manutenibilidade
+      - Manter comportamento existente (sem breaking changes)
+    
+    # Tipos de refatoração
+    refactoring_types:
+      - extract_method
+      - extract_class
+      - rename
+      - move
+      - inline
+      - simplify_conditional
+      - remove_duplication
+
+  # ---------------------------------------------------------------------------
+  # Architecture - Consultor de Arquitetura
+  # ---------------------------------------------------------------------------
+  architecture:
+    name: "Architecture Advisor"
+    description: "Orienta decisões arquiteturais e design patterns"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.4
+      max_tokens: 4096
+    
+    tools:
+      - code_analysis
+      - file_operations
+      - search_tools
+    
+    instructions: |
+      Você é um arquiteto de software experiente.
+      
+      Suas responsabilidades:
+      - Avaliar arquitetura existente
+      - Sugerir melhorias arquiteturais
+      - Recomendar design patterns
+      - Identificar problemas de acoplamento
+      - Orientar sobre escalabilidade
+      - Aconselhar sobre organização de código
+
+  # ---------------------------------------------------------------------------
+  # Security - Analisador de Segurança
+  # ---------------------------------------------------------------------------
+  security:
+    name: "Security Analyst"
+    description: "Analisa vulnerabilidades e melhores práticas de segurança"
+    
+    model:
+      provider: openai
+      name: gpt-4o
+      temperature: 0.2
+      max_tokens: 4096
+    
+    tools:
+      - code_analysis
+      - file_operations
+      - security_scanner
+    
+    instructions: |
+      Você é um especialista em segurança de aplicações.
+      
+      Seu papel é identificar e mitigar riscos:
+      - Detectar vulnerabilidades comuns (OWASP Top 10)
+      - Analisar práticas de autenticação/autorização
+      - Verificar tratamento de dados sensíveis
+      - Identificar injeções (SQL, XSS, etc.)
+      - Recomendar correções e melhorias
+    
+    # Categorias de vulnerabilidade
+    vulnerability_categories:
+      - injection
+      - broken_authentication
+      - sensitive_data_exposure
+      - xxe
+      - broken_access_control
+      - security_misconfiguration
+      - xss
+      - insecure_deserialization
+      - vulnerable_components
+      - insufficient_logging
+
+# -----------------------------------------------------------------------------
+# Coordenador Multiagente
+# -----------------------------------------------------------------------------
+coordinator:
+  name: "Development Copilot Coordinator"
+  description: "Coordena múltiplos copilotos para tarefas complexas"
+  
+  model:
+    provider: openai
+    name: gpt-4o
+    temperature: 0.3
+    max_tokens: 2048
+  
+  instructions: |
+    Você é o coordenador central dos copilotos de desenvolvimento.
+    
+    Seu papel é:
+    - Entender a solicitação do usuário
+    - Determinar quais copilotos são necessários
+    - Coordenar a execução entre copilotos
+    - Consolidar resultados
+    - Apresentar resposta unificada
+  
+  # Mapeamento de intenções para copilotos
+  intent_mapping:
+    review: [code_reviewer]
+    document: [documentation]
+    test: [testing]
+    debug: [debug]
+    refactor: [refactoring]
+    architecture: [architecture]
+    security: [security]
+    full_analysis: [code_reviewer, security, architecture]
+

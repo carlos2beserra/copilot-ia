@@ -1,0 +1,88 @@
+{
+  "name": "Copilot-IA",
+  "version": "1.0.0",
+  "description": "Plataforma de agentes de IA especializados em desenvolvimento de software",
+  "framework": "Agno",
+  "repository": "https://github.com/seu-usuario/copilot-ia",
+  
+  "copilots": {
+    "code_reviewer": {
+      "class": "CodeReviewerCopilot",
+      "description": "Analisa código, identifica problemas e sugere melhorias",
+      "methods": ["analyze", "analyze_diff", "quick_review"],
+      "focus_areas": ["bugs", "security", "performance", "maintainability", "style", "complexity"]
+    },
+    "documentation": {
+      "class": "DocumentationCopilot", 
+      "description": "Gera documentação, docstrings e README",
+      "methods": ["generate_docstring", "generate_readme", "add_inline_comments", "document_file"],
+      "docstring_styles": ["google", "numpy", "sphinx"]
+    },
+    "testing": {
+      "class": "TestingCopilot",
+      "description": "Cria testes unitários, de integração e E2E",
+      "methods": ["generate_unit_tests", "generate_integration_tests", "suggest_test_cases"],
+      "frameworks": {
+        "python": ["pytest", "unittest"],
+        "javascript": ["jest", "vitest", "mocha"],
+        "typescript": ["jest", "vitest"]
+      }
+    },
+    "debug": {
+      "class": "DebugCopilot",
+      "description": "Auxilia na identificação e resolução de bugs",
+      "methods": ["analyze_error", "suggest_fix", "explain_error"]
+    },
+    "refactoring": {
+      "class": "RefactoringCopilot",
+      "description": "Sugere e aplica refatorações de código",
+      "methods": ["suggest_refactoring", "apply_refactoring", "simplify"],
+      "refactoring_types": ["extract_method", "extract_class", "rename", "move", "inline", "simplify_conditional", "remove_duplication"]
+    },
+    "architecture": {
+      "class": "ArchitectureCopilot",
+      "description": "Orienta decisões arquiteturais e design patterns",
+      "methods": ["analyze_architecture", "suggest_patterns", "evaluate_coupling"]
+    },
+    "security": {
+      "class": "SecurityCopilot",
+      "description": "Analisa vulnerabilidades e melhores práticas de segurança",
+      "methods": ["scan_vulnerabilities", "analyze_owasp", "check_sensitive_data"],
+      "vulnerability_categories": ["injection", "broken_authentication", "sensitive_data_exposure", "xxe", "broken_access_control", "security_misconfiguration", "xss", "insecure_deserialization", "vulnerable_components", "insufficient_logging"]
+    }
+  },
+  
+  "api": {
+    "base_url": "http://localhost:8000",
+    "endpoints": {
+      "review": {"method": "POST", "path": "/api/v1/review"},
+      "docs": {"method": "POST", "path": "/api/v1/docs"},
+      "test": {"method": "POST", "path": "/api/v1/test"},
+      "security": {"method": "POST", "path": "/api/v1/security"},
+      "debug": {"method": "POST", "path": "/api/v1/debug"}
+    },
+    "docs_url": "http://localhost:8000/docs"
+  },
+  
+  "configuration": {
+    "env_vars": {
+      "required": ["OPENAI_API_KEY | ANTHROPIC_API_KEY | GROQ_API_KEY | GOOGLE_API_KEY"],
+      "optional": ["DEFAULT_MODEL", "DEFAULT_PROVIDER", "CACHE_ENABLED", "LOG_LEVEL"]
+    },
+    "default_model": "gpt-4o",
+    "default_provider": "openai",
+    "supported_providers": ["openai", "anthropic", "groq", "google"]
+  },
+  
+  "supported_languages": {
+    "full_support": ["python"],
+    "basic_support": ["javascript", "typescript", "java", "go", "rust", "c", "cpp", "csharp", "php", "ruby"]
+  },
+  
+  "usage_examples": {
+    "python_import": "from src.copilots import CodeReviewerCopilot, SecurityCopilot, TestingCopilot",
+    "basic_review": "reviewer = CodeReviewerCopilot()\nresultado = reviewer.analyze(code='...', language='python')",
+    "api_call": "curl -X POST http://localhost:8000/api/v1/review -H 'Content-Type: application/json' -d '{\"code\": \"...\", \"language\": \"python\"}'"
+  }
+}
+

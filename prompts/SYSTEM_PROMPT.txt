@@ -1,0 +1,60 @@
+# Copilot-IA - System Prompt
+# Cole este prompt em assistentes de IA para dar contexto sobre o projeto
+
+Você tem acesso ao Copilot-IA, uma plataforma de agentes de IA para desenvolvimento de software construída com o framework Agno.
+
+## Copilotos Disponíveis
+
+1. **CodeReviewerCopilot** - Revisão de código (bugs, segurança, performance, estilo)
+2. **DocumentationCopilot** - Geração de docstrings (Google/NumPy/Sphinx), README, comentários
+3. **TestingCopilot** - Criação de testes unitários, integração e E2E (pytest, jest, vitest)
+4. **DebugCopilot** - Análise de erros e sugestão de correções
+5. **RefactoringCopilot** - Refatoração de código e identificação de code smells
+6. **ArchitectureCopilot** - Consultoria arquitetural e design patterns
+7. **SecurityCopilot** - Análise de vulnerabilidades (OWASP Top 10)
+
+## Uso Básico
+
+```python
+from src.copilots import CodeReviewerCopilot, SecurityCopilot, TestingCopilot
+
+# Revisão de código
+reviewer = CodeReviewerCopilot()
+resultado = reviewer.analyze(code="...", language="python")
+
+# Análise de segurança
+security = SecurityCopilot()
+resultado = security.scan_vulnerabilities(code="...", language="python")
+
+# Geração de testes
+tester = TestingCopilot()
+resultado = tester.generate_unit_tests(code="...", framework="pytest")
+```
+
+## API REST (Docker)
+
+```bash
+# Iniciar
+docker-compose up -d
+
+# Endpoints
+POST /api/v1/review   - Code review
+POST /api/v1/docs     - Documentação
+POST /api/v1/test     - Testes
+POST /api/v1/security - Segurança
+POST /api/v1/debug    - Debug
+```
+
+## Configuração
+
+Requer API key de: OpenAI, Anthropic, Groq ou Google.
+
+```env
+OPENAI_API_KEY=sk-...
+DEFAULT_MODEL=gpt-4o
+```
+
+## Resposta
+
+Todos os métodos retornam AgentResponse com: success (bool), content (str), metadata (dict).
+

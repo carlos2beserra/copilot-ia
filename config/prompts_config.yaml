@@ -1,0 +1,432 @@
+# =============================================================================
+# Copilot-IA - Templates de Prompts
+# =============================================================================
+# Este arquivo contém os templates de prompts utilizados pelos copilotos
+
+# -----------------------------------------------------------------------------
+# Templates do Code Reviewer
+# -----------------------------------------------------------------------------
+code_reviewer:
+  
+  analyze_file:
+    name: "Análise de Arquivo"
+    template: |
+      Analise o seguinte código e forneça um relatório detalhado de revisão.
+      
+      **Arquivo:** {filename}
+      **Linguagem:** {language}
+      
+      ```{language}
+      {code}
+      ```
+      
+      Por favor, analise os seguintes aspectos:
+      1. **Bugs e Erros Potenciais**: Identifique possíveis bugs ou erros lógicos
+      2. **Segurança**: Aponte vulnerabilidades de segurança
+      3. **Performance**: Sugira otimizações de performance
+      4. **Legibilidade**: Avalie clareza e manutenibilidade do código
+      5. **Boas Práticas**: Verifique conformidade com boas práticas
+      
+      Formate sua resposta em Markdown com seções claras para cada aspecto.
+
+  analyze_diff:
+    name: "Análise de Diff"
+    template: |
+      Analise as seguintes alterações de código e forneça feedback sobre o diff.
+      
+      **Arquivo:** {filename}
+      
+      ```diff
+      {diff}
+      ```
+      
+      Avalie:
+      1. As mudanças introduzem bugs?
+      2. Há problemas de segurança?
+      3. O código segue boas práticas?
+      4. Há sugestões de melhoria?
+
+  quick_review:
+    name: "Revisão Rápida"
+    template: |
+      Faça uma revisão rápida do código abaixo, focando nos problemas mais críticos.
+      
+      ```{language}
+      {code}
+      ```
+      
+      Liste apenas os TOP 5 problemas mais importantes encontrados.
+
+# -----------------------------------------------------------------------------
+# Templates de Documentação
+# -----------------------------------------------------------------------------
+documentation:
+  
+  generate_docstring:
+    name: "Gerar Docstring"
+    template: |
+      Gere uma docstring completa no estilo {style} para a seguinte função/classe:
+      
+      ```{language}
+      {code}
+      ```
+      
+      A docstring deve incluir:
+      - Descrição clara do propósito
+      - Parâmetros com tipos e descrições
+      - Retorno com tipo e descrição
+      - Exceções que podem ser levantadas
+      - Exemplo de uso (se aplicável)
+
+  generate_readme:
+    name: "Gerar README"
+    template: |
+      Gere um README.md completo para o seguinte projeto:
+      
+      **Nome do Projeto:** {project_name}
+      **Descrição:** {description}
+      **Linguagem Principal:** {language}
+      
+      **Estrutura de Arquivos:**
+      ```
+      {file_structure}
+      ```
+      
+      **Arquivos Principais:**
+      {main_files}
+      
+      O README deve incluir:
+      - Título e descrição
+      - Badges relevantes
+      - Instalação
+      - Uso básico
+      - Configuração
+      - Exemplos
+      - Contribuição
+      - Licença
+
+  generate_api_docs:
+    name: "Gerar Documentação de API"
+    template: |
+      Gere documentação de API para as seguintes funções/endpoints:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Formato: {format}
+      
+      Inclua:
+      - Descrição de cada endpoint/função
+      - Parâmetros aceitos
+      - Exemplos de requisição/resposta
+      - Códigos de erro
+
+# -----------------------------------------------------------------------------
+# Templates de Testes
+# -----------------------------------------------------------------------------
+testing:
+  
+  generate_unit_tests:
+    name: "Gerar Testes Unitários"
+    template: |
+      Gere testes unitários abrangentes para o seguinte código:
+      
+      **Arquivo:** {filename}
+      **Framework de Teste:** {test_framework}
+      
+      ```{language}
+      {code}
+      ```
+      
+      Os testes devem cobrir:
+      - Casos normais (happy path)
+      - Casos de borda (edge cases)
+      - Tratamento de erros
+      - Valores inválidos
+      
+      Use mocks quando necessário para isolar o código testado.
+
+  generate_integration_tests:
+    name: "Gerar Testes de Integração"
+    template: |
+      Gere testes de integração para os seguintes componentes:
+      
+      **Componentes:**
+      {components}
+      
+      **Framework:** {test_framework}
+      
+      Os testes devem verificar:
+      - Integração entre componentes
+      - Fluxos de dados
+      - Comportamento em cenários reais
+
+  suggest_test_cases:
+    name: "Sugerir Casos de Teste"
+    template: |
+      Analise o código abaixo e sugira casos de teste que devem ser implementados:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Liste os casos de teste em formato de checklist, organizados por:
+      - Testes unitários necessários
+      - Testes de integração necessários
+      - Testes E2E recomendados
+
+# -----------------------------------------------------------------------------
+# Templates de Debug
+# -----------------------------------------------------------------------------
+debug:
+  
+  analyze_error:
+    name: "Analisar Erro"
+    template: |
+      Analise o seguinte erro e ajude a identificar a causa e solução:
+      
+      **Mensagem de Erro:**
+      ```
+      {error_message}
+      ```
+      
+      **Stack Trace:**
+      ```
+      {stack_trace}
+      ```
+      
+      **Código Relevante:**
+      ```{language}
+      {code}
+      ```
+      
+      Por favor, forneça:
+      1. **Causa Raiz**: Por que este erro está ocorrendo?
+      2. **Solução**: Como corrigir o problema?
+      3. **Prevenção**: Como evitar este erro no futuro?
+
+  debug_behavior:
+    name: "Depurar Comportamento"
+    template: |
+      O código não está se comportando como esperado.
+      
+      **Comportamento Esperado:**
+      {expected_behavior}
+      
+      **Comportamento Atual:**
+      {actual_behavior}
+      
+      **Código:**
+      ```{language}
+      {code}
+      ```
+      
+      Ajude a identificar por que o código não está funcionando corretamente.
+
+  explain_code:
+    name: "Explicar Código"
+    template: |
+      Explique o que o seguinte código faz, passo a passo:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Inclua:
+      - Propósito geral
+      - Explicação linha por linha (se complexo)
+      - Possíveis problemas
+
+# -----------------------------------------------------------------------------
+# Templates de Refatoração
+# -----------------------------------------------------------------------------
+refactoring:
+  
+  identify_smells:
+    name: "Identificar Code Smells"
+    template: |
+      Analise o código abaixo e identifique code smells:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Para cada code smell encontrado, forneça:
+      - Nome do code smell
+      - Localização no código
+      - Por que é problemático
+      - Sugestão de refatoração
+
+  suggest_refactoring:
+    name: "Sugerir Refatoração"
+    template: |
+      Sugira refatorações para melhorar o seguinte código:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Foco em: {focus_areas}
+      
+      Para cada sugestão:
+      - Descreva a mudança
+      - Mostre o código refatorado
+      - Explique os benefícios
+
+  apply_pattern:
+    name: "Aplicar Design Pattern"
+    template: |
+      Refatore o código abaixo aplicando o design pattern: {pattern}
+      
+      **Código Original:**
+      ```{language}
+      {code}
+      ```
+      
+      Forneça:
+      - Código refatorado com o pattern
+      - Explicação de como o pattern resolve o problema
+      - Benefícios da mudança
+
+# -----------------------------------------------------------------------------
+# Templates de Arquitetura
+# -----------------------------------------------------------------------------
+architecture:
+  
+  analyze_structure:
+    name: "Analisar Estrutura"
+    template: |
+      Analise a arquitetura do projeto com base na estrutura de arquivos:
+      
+      ```
+      {file_structure}
+      ```
+      
+      Avalie:
+      - Organização geral
+      - Separação de responsabilidades
+      - Padrões arquiteturais identificados
+      - Pontos de melhoria
+
+  suggest_architecture:
+    name: "Sugerir Arquitetura"
+    template: |
+      Com base nos requisitos abaixo, sugira uma arquitetura apropriada:
+      
+      **Requisitos:**
+      {requirements}
+      
+      **Contexto:**
+      {context}
+      
+      Forneça:
+      - Diagrama de arquitetura (em ASCII/Mermaid)
+      - Componentes principais
+      - Fluxo de dados
+      - Tecnologias recomendadas
+      - Trade-offs considerados
+
+  evaluate_decision:
+    name: "Avaliar Decisão Arquitetural"
+    template: |
+      Avalie a seguinte decisão arquitetural:
+      
+      **Decisão:** {decision}
+      **Contexto:** {context}
+      **Alternativas Consideradas:** {alternatives}
+      
+      Forneça:
+      - Prós e contras da decisão
+      - Riscos identificados
+      - Recomendação final
+
+# -----------------------------------------------------------------------------
+# Templates de Segurança
+# -----------------------------------------------------------------------------
+security:
+  
+  vulnerability_scan:
+    name: "Scan de Vulnerabilidades"
+    template: |
+      Realize uma análise de segurança do seguinte código:
+      
+      **Arquivo:** {filename}
+      
+      ```{language}
+      {code}
+      ```
+      
+      Verifique especialmente:
+      - Injeção (SQL, XSS, Command)
+      - Autenticação/Autorização
+      - Exposição de dados sensíveis
+      - Configurações inseguras
+      - Dependências vulneráveis
+      
+      Para cada vulnerabilidade encontrada:
+      - Severidade (Crítica/Alta/Média/Baixa)
+      - Localização
+      - Descrição do risco
+      - Recomendação de correção
+
+  review_auth:
+    name: "Revisar Autenticação"
+    template: |
+      Analise a implementação de autenticação/autorização:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Verifique:
+      - Armazenamento de senhas
+      - Gestão de sessões
+      - Tokens e JWT
+      - Controle de acesso
+      - Proteção contra ataques comuns
+
+  secure_code_review:
+    name: "Code Review de Segurança"
+    template: |
+      Realize um code review focado em segurança:
+      
+      ```{language}
+      {code}
+      ```
+      
+      Foque em vulnerabilidades do OWASP Top 10 e forneça
+      recomendações práticas de correção.
+
+# -----------------------------------------------------------------------------
+# Templates do Coordenador
+# -----------------------------------------------------------------------------
+coordinator:
+  
+  analyze_request:
+    name: "Analisar Solicitação"
+    template: |
+      Analise a seguinte solicitação do usuário e determine quais copilotos
+      devem ser acionados:
+      
+      **Solicitação:** {request}
+      
+      **Contexto disponível:**
+      - Arquivos mencionados: {files}
+      - Linguagem detectada: {language}
+      
+      Determine:
+      1. Intenção principal do usuário
+      2. Copilotos necessários (em ordem de execução)
+      3. Informações adicionais necessárias
+
+  consolidate_results:
+    name: "Consolidar Resultados"
+    template: |
+      Consolide os resultados dos seguintes copilotos em uma resposta unificada:
+      
+      {results}
+      
+      Forneça um resumo executivo e organize as informações de forma clara
+      e acionável para o desenvolvedor.
+

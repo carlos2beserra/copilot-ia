@@ -1,0 +1,178 @@
+# =============================================================================
+# Copilot-IA - Configuração de Logging
+# =============================================================================
+
+version: 1
+disable_existing_loggers: false
+
+# -----------------------------------------------------------------------------
+# Formatters
+# -----------------------------------------------------------------------------
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  
+  detailed:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  
+  json:
+    class: "pythonjsonlogger.jsonlogger.JsonFormatter"
+    format: "%(asctime)s %(name)s %(levelname)s %(message)s %(filename)s %(lineno)d %(funcName)s"
+
+  colored:
+    "()": "colorlog.ColoredFormatter"
+    format: "%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s%(reset)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+    log_colors:
+      DEBUG: cyan
+      INFO: green
+      WARNING: yellow
+      ERROR: red
+      CRITICAL: red,bg_white
+
+# -----------------------------------------------------------------------------
+# Handlers
+# -----------------------------------------------------------------------------
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: standard
+    stream: ext://sys.stdout
+  
+  console_colored:
+    class: colorlog.StreamHandler
+    level: DEBUG
+    formatter: colored
+    stream: ext://sys.stdout
+  
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: logs/copilot-ia.log
+    maxBytes: 10485760  # 10 MB
+    backupCount: 5
+    encoding: utf8
+  
+  file_json:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/copilot-ia.json
+    maxBytes: 10485760
+    backupCount: 5
+    encoding: utf8
+  
+  error_file:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: logs/errors.log
+    maxBytes: 10485760
+    backupCount: 5
+    encoding: utf8
+
+# -----------------------------------------------------------------------------
+# Loggers
+# -----------------------------------------------------------------------------
+loggers:
+  # Logger principal da aplicação
+  copilot_ia:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+  
+  # Logger dos agentes
+  copilot_ia.agents:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+  
+  # Logger dos copilotos
+  copilot_ia.copilots:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: false
+  
+  # Logger das ferramentas
+  copilot_ia.tools:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  
+  # Logger da API
+  copilot_ia.api:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+  
+  # Logger de métricas e performance
+  copilot_ia.metrics:
+    level: INFO
+    handlers: [file_json]
+    propagate: false
+  
+  # Loggers de bibliotecas externas
+  openai:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  anthropic:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  httpx:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  uvicorn:
+    level: INFO
+    handlers: [console]
+    propagate: false
+
+# -----------------------------------------------------------------------------
+# Root Logger
+# -----------------------------------------------------------------------------
+root:
+  level: INFO
+  handlers: [console, file]
+
+# -----------------------------------------------------------------------------
+# Configurações Adicionais
+# -----------------------------------------------------------------------------
+settings:
+  # Diretório de logs
+  log_dir: logs
+  
+  # Nível padrão baseado no ambiente
+  levels:
+    development: DEBUG
+    staging: INFO
+    production: WARNING
+  
+  # Habilitar logging de requisições LLM
+  log_llm_requests: true
+  
+  # Habilitar logging de tokens
+  log_token_usage: true
+  
+  # Sanitizar dados sensíveis nos logs
+  sanitize_sensitive: true
+  
+  # Padrões a sanitizar
+  sensitive_patterns:
+    - "api_key"
+    - "api-key"
+    - "apikey"
+    - "password"
+    - "secret"
+    - "token"
+    - "authorization"
+    - "bearer"
+

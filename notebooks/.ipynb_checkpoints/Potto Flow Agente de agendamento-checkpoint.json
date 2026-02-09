@@ -1,0 +1,378 @@
+{
+  "name": "Potto Flow Agente de agendamento",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fa4ac463-aeb4-48ca-a135-d6088cd98990",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -80
+      ],
+      "id": "f9b24d35-8ba5-483c-8c1b-652ff645ab4f",
+      "name": "Webhook",
+      "webhookId": "fa4ac463-aeb4-48ca-a135-d6088cd98990"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "55f41c61-8568-4b33-8cf4-a8fb0648843c",
+              "name": "whatsapp",
+              "value": "={{ $json.body.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "87b50a77-71c0-459f-90a5-7c4269353681",
+              "name": "nome",
+              "value": "={{ $json.body.chatName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        -80
+      ],
+      "id": "e3294ca7-9d4c-4664-9955-d4956405bc46",
+      "name": "simplificação de dados",
+      "notes": "Desenvolvido por Potto Flow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Webhook').item.json.body.text.message }}",
+        "options": {
+          "systemMessage": "=<OBJETIVO>\nVocê é um agente virtual responsável por:\n\nAgendar, reagendar e cancelar consultas.\n\nConfirmar sempre os dados antes de qualquer ação.\n\nGarantir comunicação eficiente, clara e profissional.\n\n</OBJETIVO>\n\n<USO DA TOOL>\n\nPassos para Novo Agendamento:\nPergunte para a pessoa:\n\nQual o dia desejado para agendamento.\n\nSolicite também:\n\nNome completo\n\nE-mail\n\nAntes de realizar o agendamento consulte se o hórario está disponivel, Utilize a função/tool: <buscar_evento>\n\nNão fale que está todos os hórarios dispiniveis para as pessoas. Apenas pergunte um horario.\n\nSe o horário NÃO estiver disponível:\n\nSugira 3 horários seguintes disponíveis próximos do horário desejado.\n\nExemplo de mensagem:\n\nHorários disponíveis para [data]:\n\n📅 [data] 08:00\n📅 [data] 09:00\n📅 [data] 10:00\n\nEscolha um horário confortável para você para prosseguir com o agendamento.\n\nConfirme com o paciente:\n\nData e horário escolhido.\n\nRealize o agendamento no Google Calendar:\n\nTítulo do evento: Consulta - [Nome do Paciente]\n\nInclua o paciente como convidado (usando o e-mail fornecido).\n\nInclua o organizador como convidado também.\n\nResponda ao paciente conforme o tipo e data do agendamento:\n\nExemplo de CONFIRMAÇÃO para HOJE:\n✅ Agendamento confirmado para hoje às [horário escolhido]!\n\nExemplo de CONFIRMAÇÃO para DATA FUTURA - CONSULTA PRESENCIAL:\n✅ Agendamento confirmado para [data escolhida] às [horário escolhido]!\n\nDetalhes do seu agendamento:\nConsulta: Presencial\nData: [data escolhida]\nHorário: [horário escolhido]\nEndereço: Rua Feliz 123, São Paulo - SP\n\nAguardamos você! Caso tenha dúvidas, estamos à disposição.\n\nFLUXO DE CANCELAMENTO:\nPassos para Cancelamento:\nSolicite ao paciente o e-mail utilizado no agendamento, para segurança.\n\nUse a função/tool:\n<buscar_evento>getAll: event</buscar_evento>\npara localizar o evento usando o e-mail fornecido.\n\nObtenha o Event_ID do evento e realize o cancelamento.\n\nConfirme o cancelamento com mensagem clara:\n\n✅ Agendamento cancelado com sucesso! \nCaso deseje reagendar ou tenha alguma dúvida, estamos à disposição.\n\nFLUXO DE AtUALIZAÇÃO:\nSolicite ao paciente o e-mail utilizado no agendamento, para segurança.\n\nUse a função/tool:\n<buscar_evento>getAll: event</buscar_evento>\npara localizar o evento usando o e-mail fornecido.\n\nObtenha o Event_ID do evento e realize a atualização do evento.\n\nSolicite a nova data e faça a atualização do evento usando a tool <atualizar_evento>\n\nExemplo de mensagem:\n\n✅ Agendamento atualizado com sucesso!\n\nEnvie a data nova para o usuario \n\n</USO DA TOOL>\n\nSeguindo o padrão brasileiro de data e hora (DD/MM/AAAA e HH), o assistente opera no fuso horário \"America/Sao_Paulo\". hora atual: <dateAndTime>\n\n    - Today is {{ $now.setLocale('en').weekdayLong }}, {{ $now.format('yyyy/MM/dd') }} - {{ $now.hour.toString().padStart(2, '0') }}:{{ $now.minute.toString().padStart(2, '0') }}\n\n   \n\n  </dateAndTime> \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        912,
+        -80
+      ],
+      "id": "d6fd2901-baf7-4d68-9733-e0e6c4abf876",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        144
+      ],
+      "id": "9bfce2ab-2cd1-425e-a71d-1b83a897ac1d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Mb7LZQRk1hD3pftH",
+          "name": "OpenAi Potto Flow - Aula"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.whatsapp }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        960,
+        144
+      ],
+      "id": "3e0d4f67-a1f3-49fe-825a-0370711071cb",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "pottoflow@gmail.com",
+          "mode": "list",
+          "cachedResultName": "pottoflow@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', `data que o usuário escolheu para o agendamento`, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', `30 minutos a partir da data e hora que o usuário escolheu`, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', `Um lembrete de 30 minutos antes e um lembrete um dia antes do evento `, 'boolean') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', `Adicione na descrição um pequeno resumo da conversa e a intenção do usuário `, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', `Altere o titulo do agendamento para o [nome completo do usuário] `, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        160
+      ],
+      "id": "66c49f3f-4dd1-4df9-96ed-3b49a8d34139",
+      "name": "criar_evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "akzFK6lJZPXcGJIA",
+          "name": "Google Calendar account potto flow aula"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "pottoflow@gmail.com",
+          "mode": "list",
+          "cachedResultName": "pottoflow@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', `Data do inicio do evento escolhido pelo usuário`, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', `Data após uma semana da data selecionada pelo usuário `, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1312,
+        160
+      ],
+      "id": "5f2fe5e0-4574-47b2-8127-4ce4e64dfee5",
+      "name": "buscar_evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "akzFK6lJZPXcGJIA",
+          "name": "Google Calendar account potto flow aula"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "pottoflow@gmail.com",
+          "mode": "list",
+          "cachedResultName": "pottoflow@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', `event id deve ser excluído, gerado na conversa do agendamento com o usuário`, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1472,
+        160
+      ],
+      "id": "f772f338-1217-4344-9777-3369bd890ad3",
+      "name": "deletar_evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "akzFK6lJZPXcGJIA",
+          "name": "Google Calendar account potto flow aula"
+        }
+      },
+      "notes": "Desenvolvido por Potto Flow"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "pottoflow@gmail.com",
+          "mode": "list",
+          "cachedResultName": "pottoflow@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', `atualizar o evento do usuário`, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1632,
+        160
+      ],
+      "id": "eadcdc62-a5c7-49b3-861e-86410ff40544",
+      "name": "atualizar_evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "akzFK6lJZPXcGJIA",
+          "name": "Google Calendar account potto flow aula"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.z-api.io/instances/3DE8B7E0C5AB203F004E4E20A388CB1E/token/D6C681645D55E6E8104FB950/send-text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "phone",
+              "value": "={{ $('simplificação de dados').item.json.whatsapp }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        -80
+      ],
+      "id": "40e6f482-2567-41de-80b8-811248aab963",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "7Q5cOZVOcHSpph4C",
+          "name": "Z-APi Potto Flow Aula"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "simplificação de dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "simplificação de dados": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar_evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "deletar_evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizar_evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "8c3bf1e1-b29b-4a2c-b7e5-a1adfe3e15e6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c69e1b53997710bf4f17ba5337a6c2e99a4d2e3a640c9707ec7026eb92255e11"
+  },
+  "id": "J18T3efTh4ybfTDz",
+  "tags": [
+    {
+      "createdAt": "2025-04-29T15:46:51.136Z",
+      "updatedAt": "2025-04-29T15:46:51.136Z",
+      "id": "tPu7jbCLAlQFhz7v",
+      "name": "Potto Flow - Aula"
+    }
+  ]
+}
